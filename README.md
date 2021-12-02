@@ -34,7 +34,7 @@ source .venv/bin/activate  # Can skip this if venv is already activated
 
 
 
-Do not forget that if any of the arguments contain spaces, you must wrap that argument in quotes. If problem persists, just remove spaces from file name and worksheet names.
+Do not forget that if any of the arguments contain spaces, you must wrap that argument in quotes. If problem persists, just remove spaces from file name and worksheet names and run command without any quotes.
 
 If you forget any of this, run any of the following to get a short prompt of how to run
 
