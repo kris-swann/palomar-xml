@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="0.02">
+
+  <xs:element name="BatchDataSet" type="BatchDataSet" >
+    <xs:key name="KeyXml_BrokerID">
+      <xs:selector xpath=".//Broker" />
+      <xs:field xpath="@Xml_BrokerID" />
+    </xs:key>
+    <xs:key name="KeyXml_BrokerageID">
+      <xs:selector xpath=".//Brokerage" />
+      <xs:field xpath="@Xml_BrokerageID" />
+    </xs:key>
+    <xs:key name="KeyXml_PolicyID">
+      <xs:selector xpath=".//Policy" />
+      <xs:field xpath="@Xml_PolicyID" />
+    </xs:key>
+    <xs:key name="KeyXml_TransactionID">
+      <xs:selector xpath=".//Transaction" />
+      <xs:field xpath="@Xml_TransactionID" />
+    </xs:key>
+  </xs:element>
+
+  <xs:complexType name="BatchDataSet">
+    <xs:annotation>
+      <xs:documentation>
+        <xs:anyAttribute />
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Insurer" type="InsurerType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Brokers" type="ArrayOfBroker" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Brokerages" type="ArrayOfBrokerage" />
+      <xs:element minOccurs="0" maxOccurs="1" name="IPC" type="IPCType" />
+    </xs:sequence>
+    <xs:attribute name="SchemaVersion" type="xs:double" fixed="1.0" use="required"/>
+    <xs:attribute name="Quarter" type="QuarterType" use="required"/>
+    <xs:attribute name="Year" type="YearType" use="required"/>
+    <xs:attribute name="ReportingState" type="StateCodeType" fixed="FL" use="required"/>
+    <xs:attribute name="SubmissionType" type="xs:string" fixed="INS" use="required"/>
+  </xs:complexType>
+  
+  <xs:complexType name="InsurerType">
+    <xs:annotation>
+      <xs:documentation>
+        <xs:anyAttribute />
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="NAICNumber" type="InsurerNAICType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Name" type="InsurerNameType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Contact" type="ContactType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="BrokerageLicenseNumberType">
+    <xs:restriction base="AlphaNumericType">
+      <xs:maxLength value="7" />
+      <xs:minLength value="7" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BrokerageNameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="75" />
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="InsurerNameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="75" />
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ContactType">
+    <xs:sequence>
+      <!-- see general types for below elements -->
+      <xs:element minOccurs="1" maxOccurs="1" name="FirstName" type="FirstNameType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MiddleName" type="MiddleNameType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LastName" type="LastNameType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="NameSuffix" type="NameSuffixType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="EmailAddress" type="EmailAddressType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ContactAddress" type="AddressType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PhoneNumber" type="PhoneNumberType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Fax" type="FaxNumberType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ArrayOfBrokerage">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="Brokerage" type="BrokerageType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- broker -->
+  <xs:complexType name="BrokerageType">
+    <xs:annotation>
+      <xs:documentation>
+        <xs:anyAttribute />
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="LicenseNumber" type="BrokerageLicenseNumberType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="BrokerageNameType"/>
+      <xs:element minOccurs="0" maxOccurs="1" name="Policies" type="ArrayOfPolicy" />
+    </xs:sequence>
+    <xs:attribute name="Xml_BrokerageID" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>Must be unique within the return</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  
+  <!-- broker -->
+  <xs:complexType name="IPCType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Policies" type="ArrayOfPolicy" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="ArrayOfBroker">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="Broker" type="BrokerType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- broker -->
+  <xs:complexType name="BrokerType">
+    <xs:annotation>
+      <xs:documentation>
+        <xs:anyAttribute />
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="LicenseNumber" type="BrokerLicenseNumberType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FirstName" type="FirstNameType"/>
+      <xs:element minOccurs="0" maxOccurs="1" name="LastName" type="LastNameType"/>
+      <xs:element minOccurs="1" maxOccurs="1" name="Policies" type="ArrayOfPolicy" />
+    </xs:sequence>
+    <xs:attribute name="Xml_BrokerID" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>Must be unique within the return</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="BrokerLicenseNumberType">
+    <xs:restriction base="AlphaNumericType">
+      <xs:maxLength value="7" />
+      <xs:minLength value="7" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Policies (ArrayOfPolicy) -->
+  <xs:complexType name="ArrayOfPolicy">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Policy" type="Policy" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Policy">
+    <xs:annotation>
+      <xs:documentation>
+        <xs:anyAttribute />
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PolicyNumber" type="PolicyNumberType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="EffectiveDate" type="xs:date" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ExpirationDate" type="xs:date" />
+      <xs:element minOccurs="1" maxOccurs="1" name="InsuredName" type="NameType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Transactions" type="ArrayOfTransaction" />
+    </xs:sequence>
+    <xs:attribute name="Xml_PolicyID" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>Must be unique within the return</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- PolicyNumberType -->
+  <xs:simpleType name="PolicyNumberType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50" />
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="75" />
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ArrayOfTransaction -->
+  <xs:complexType name="ArrayOfTransaction">
+    <xs:annotation>
+      <xs:documentation>
+        <xs:anyAttribute />
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Transaction" type="Transaction" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Transaction -->
+  <xs:complexType name="Transaction">
+    <xs:annotation>
+      <xs:documentation>
+        <xs:anyAttribute />
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="EffectiveDate" type="xs:date" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Premium" type="NetDecimalType" />
+    </xs:sequence>
+    <xs:attribute name="Xml_TransactionID" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>Must be unique within the return</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="NetDecimalType">
+    <xs:annotation>
+      <xs:documentation>Type for a amount field with dollars and cents</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="NetPremiumDecimalType">
+      <xs:totalDigits value="10" />
+      <xs:minInclusive value="-99999999.99" />
+      <xs:maxInclusive value="99999999.99" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NetPremiumDecimalType">
+    <xs:annotation>
+      <xs:documentation>4-digit decimal typically used by a decimal amount field (Percentage field).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="InsurerNAICType">
+    <xs:restriction base="AlphaNumericType">
+      <xs:maxLength value="10" />
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FirstNameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50" />
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MiddleNameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30" />
+      <xs:minLength value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="LastNameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50" />
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NameSuffixType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30" />
+      <xs:minLength value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EmailAddressType">
+    <xs:annotation>
+      <xs:documentation>Used for an email address</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="75" />
+      <xs:pattern value="\w+([\-+.'_]\w+)*@\w+([\-._]\w+)*\.\w+([\-._]\w+)*">
+        <xs:annotation>
+          <xs:documentation>Domain Name Email Address</xs:documentation>
+        </xs:annotation>
+      </xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FaxNumberType">
+    <xs:annotation>
+      <xs:documentation>Used for a phone no. - 10 digits</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([0-9]{10})" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="AddressType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Address">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="75" />
+            <xs:minLength value="1" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="Address2">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="50" />
+            <xs:minLength value="0" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="City">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="20" />
+            <xs:minLength value="1" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:choice>
+        <xs:element name="StateCode" type="StateCodeType">      </xs:element>
+        <xs:element name="Province">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="30" />
+              <xs:minLength value="1" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:choice>
+      <xs:element minOccurs="1" maxOccurs="1" name="PostalCode" type="PostalCodeType"></xs:element>
+      <xs:element minOccurs="1" maxOccurs="1" name="CountryCode">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="30" />
+            <xs:minLength value="1" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="StateCodeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AL">
+        <xs:annotation>
+          <xs:documentation>Alabama</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AK">
+        <xs:annotation>
+          <xs:documentation>Alaska</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AZ">
+        <xs:annotation>
+          <xs:documentation>Arizona</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AR">
+        <xs:annotation>
+          <xs:documentation>Arkansas</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CA">
+        <xs:annotation>
+          <xs:documentation>California</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CO">
+        <xs:annotation>
+          <xs:documentation>Colorado</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CT">
+        <xs:annotation>
+          <xs:documentation>Connecticut</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DE">
+        <xs:annotation>
+          <xs:documentation>Delaware</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DC">
+        <xs:annotation>
+          <xs:documentation>District Of Columbia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FL">
+        <xs:annotation>
+          <xs:documentation>Florida</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GA">
+        <xs:annotation>
+          <xs:documentation>Georgia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="HI">
+        <xs:annotation>
+          <xs:documentation>Hawaii</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ID">
+        <xs:annotation>
+          <xs:documentation>Idaho</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IL">
+        <xs:annotation>
+          <xs:documentation>Illinois</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IN">
+        <xs:annotation>
+          <xs:documentation>Indiana</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IA">
+        <xs:annotation>
+          <xs:documentation>Iowa</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KS">
+        <xs:annotation>
+          <xs:documentation>Kansas</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KY">
+        <xs:annotation>
+          <xs:documentation>Kentucky</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LA">
+        <xs:annotation>
+          <xs:documentation>Louisiana</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ME">
+        <xs:annotation>
+          <xs:documentation>Maine</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MD">
+        <xs:annotation>
+          <xs:documentation>Maryland</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MA">
+        <xs:annotation>
+          <xs:documentation>Massachusetts</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MI">
+        <xs:annotation>
+          <xs:documentation>Michigan</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MN">
+        <xs:annotation>
+          <xs:documentation>Minnesota</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MS">
+        <xs:annotation>
+          <xs:documentation>Mississippi</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MO">
+        <xs:annotation>
+          <xs:documentation>Missouri</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MT">
+        <xs:annotation>
+          <xs:documentation>Montana</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NE">
+        <xs:annotation>
+          <xs:documentation>Nebraska</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NV">
+        <xs:annotation>
+          <xs:documentation>Nevada</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NH">
+        <xs:annotation>
+          <xs:documentation>New Hampshire</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NJ">
+        <xs:annotation>
+          <xs:documentation>New Jersey</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NM">
+        <xs:annotation>
+          <xs:documentation>New Mexico</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NY">
+        <xs:annotation>
+          <xs:documentation>New York</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NC">
+        <xs:annotation>
+          <xs:documentation>North Carolina</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ND">
+        <xs:annotation>
+          <xs:documentation>North Dakota</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OH">
+        <xs:annotation>
+          <xs:documentation>Ohio</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OK">
+        <xs:annotation>
+          <xs:documentation>Oklahoma</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OR">
+        <xs:annotation>
+          <xs:documentation>Oregon</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PA">
+        <xs:annotation>
+          <xs:documentation>Pennsylvania</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RI">
+        <xs:annotation>
+          <xs:documentation>Rhode Island</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SC">
+        <xs:annotation>
+          <xs:documentation>South Carolina</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SD">
+        <xs:annotation>
+          <xs:documentation>South Dakota</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TN">
+        <xs:annotation>
+          <xs:documentation>Tennessee</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TX">
+        <xs:annotation>
+          <xs:documentation>Texas</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UT">
+        <xs:annotation>
+          <xs:documentation>Utah</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VT">
+        <xs:annotation>
+          <xs:documentation>Vermont</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VA">
+        <xs:annotation>
+          <xs:documentation>Virginia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WA">
+        <xs:annotation>
+          <xs:documentation>Washington</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WV">
+        <xs:annotation>
+          <xs:documentation>West Virginia</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WI">
+        <xs:annotation>
+          <xs:documentation>Wisconsin</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WY">
+        <xs:annotation>
+          <xs:documentation>Wyoming</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PR">
+        <xs:annotation>
+          <xs:documentation>PUERTO RICO</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GU">
+        <xs:annotation>
+          <xs:documentation>GUAM</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MP">
+        <xs:annotation>
+          <xs:documentation>NORTHERN MARIANA ISLANDS</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VI">
+        <xs:annotation>
+          <xs:documentation>U.S. Virgin Islands</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AS">
+        <xs:annotation>
+          <xs:documentation>AMERICAN SAMOA</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NU">
+        <xs:annotation>
+          <xs:documentation>Non-USA</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="PhoneNumberType">
+    <xs:annotation>
+      <xs:documentation>
+        <xs:anyAttribute />
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CountryCode" type="PartialPhoneNumberType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AreaCode" type="AreaPrefixPhoneNumberType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Prefix" type="AreaPrefixPhoneNumberType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Line" type="LinePhoneNumberType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Extension" type="PartialPhoneNumberType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="AreaPrefixPhoneNumberType">
+    <xs:restriction base="NumericType">
+      <xs:minLength value="3" />
+      <xs:maxLength value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="LinePhoneNumberType">
+    <xs:restriction base="NumericType">
+      <xs:minLength value="4" />
+      <xs:maxLength value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="YearType">
+    <xs:restriction base="NumericType">
+      <xs:minLength value="4" />
+      <xs:maxLength value="4" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="QuarterType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1">
+      </xs:enumeration>
+      <xs:enumeration value="2">
+      </xs:enumeration>
+      <xs:enumeration value="3">
+      </xs:enumeration>
+      <xs:enumeration value="4">
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="PartialPhoneNumberType">
+    <xs:restriction base="NumericType">
+      <xs:minLength value="1" />
+      <xs:maxLength value="5" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PostalCodeType">
+    <xs:annotation>
+      <xs:documentation>ZIP Code - 5 digits plus optional 4. No dashes</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{5}(([0-9]{4}))?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AlphaNumericType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Za-z0-9]*" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NumericType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]*" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+</xs:schema>

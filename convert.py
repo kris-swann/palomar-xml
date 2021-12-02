@@ -318,7 +318,7 @@ else:
     print(f"Num transactions: {acc.num_transactions}")
     root_elem = generate_xml(acc)
     xml_path = f"FSLSO_{year}_Q{quarter}.xml"
-    xsd_path = "FSLSO.Insurer.Schema.xsd"
+    xsd_path = "specifications/FSLSO.Insurer.Schema.xsd"
     with open(xml_path, "wb") as f:
         f.write(formatted_xml(root_elem))
     print("validating xml...")

@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<BatchDataSet SchemaVersion="1.0" Quarter="3" Year="2011" ReportingState="FL" SubmissionType="INS">
+  <Insurer>
+    <NAICNumber>99999</NAICNumber>
+    <Name>GENERIC SURPLUS LINES INSURANCE COMPANY</Name>
+    <Contact>
+      <FirstName>John</FirstName>
+      <LastName>Smith</LastName>
+      <EmailAddress>info@fslso.com</EmailAddress>
+      <ContactAddress>
+        <Address>1234 Elm St</Address>
+        <City>Tallahassee</City>
+        <StateCode>FL</StateCode>
+        <PostalCode>32301</PostalCode>
+        <CountryCode>US</CountryCode>
+      </ContactAddress>
+      <PhoneNumber>
+        <AreaCode>850</AreaCode>
+        <Prefix>555</Prefix>
+        <Line>5555</Line>
+      </PhoneNumber>
+      <Fax>8505551212</Fax>
+    </Contact>
+  </Insurer>
+    <Brokers>
+    <Broker Xml_BrokerID="1">
+      <LicenseNumber>A999999</LicenseNumber>
+      <FirstName>STEVE</FirstName>
+      <LastName>DOUGLAS</LastName>
+      <Policies>
+        <Policy Xml_PolicyID="3">
+          <PolicyNumber>000598890</PolicyNumber>
+          <EffectiveDate>2011-04-15</EffectiveDate>
+          <ExpirationDate>2012-04-15</ExpirationDate>
+          <InsuredName>AMELIA AMPITHEATER</InsuredName>
+          <Transactions>
+            <Transaction Xml_TransactionID="3">
+              <EffectiveDate>2011-04-15</EffectiveDate>
+              <Premium>2634.00</Premium>
+            </Transaction>
+          </Transactions>
+        </Policy>
+      </Policies>
+    </Broker>
+  </Brokers>
+    <Brokerages>
+    <Brokerage Xml_BrokerageID="1">
+      <LicenseNumber>R999999</LicenseNumber>
+      <Name>SMITH AGENCY</Name>
+      <Policies>
+        <Policy Xml_PolicyID="4">
+          <PolicyNumber>GSL333444</PolicyNumber>
+          <EffectiveDate>2012-01-21</EffectiveDate>
+          <ExpirationDate>2013-01-21</ExpirationDate>
+          <InsuredName>MOCKINGBIRD CAFE</InsuredName>
+          <Transactions>
+            <Transaction Xml_TransactionID="4">
+              <EffectiveDate>2012-01-21</EffectiveDate>
+              <Premium>25.00</Premium>
+            </Transaction>
+          </Transactions>
+        </Policy>
+        <Policy Xml_PolicyID="5">
+          <PolicyNumber>GSL333445</PolicyNumber>
+          <EffectiveDate>2012-02-01</EffectiveDate>
+          <ExpirationDate>2013-02-01</ExpirationDate>
+          <InsuredName>SUNCOAST CONSTRUCTION</InsuredName>
+          <Transactions>
+            <Transaction Xml_TransactionID="5">
+              <EffectiveDate>2012-02-01</EffectiveDate>
+              <Premium>136.39</Premium>
+            </Transaction>
+          </Transactions>
+        </Policy>
+      </Policies>
+    </Brokerage>
+    </Brokerages>
+    <IPC>
+        <Policies>
+            <Policy Xml_PolicyID="6">
+                <PolicyNumber>FD788884</PolicyNumber>
+                <EffectiveDate>2012-05-10</EffectiveDate>
+                <ExpirationDate>2013-05-10</ExpirationDate>
+                <InsuredName>FINNEGANS WAKE</InsuredName>
+                <Transactions>
+                    <Transaction Xml_TransactionID="6">
+                        <EffectiveDate>2012-05-30</EffectiveDate>
+                        <Premium>5000.00</Premium>
+                    </Transaction>
+                </Transactions>
+            </Policy>
+            <Policy Xml_PolicyID="7">
+                <PolicyNumber>HO-999999</PolicyNumber>
+                <EffectiveDate>2012-07-01</EffectiveDate>
+                <ExpirationDate>2013-07-01</ExpirationDate>
+                <InsuredName>SMITH BOATS</InsuredName>
+                <Transactions>
+                    <Transaction Xml_TransactionID="7">
+                        <EffectiveDate>2012-07-01</EffectiveDate>
+                        <Premium>-200.00</Premium>
+                    </Transaction>
+                </Transactions>
+            </Policy>
+        </Policies>
+    </IPC>
+</BatchDataSet>
