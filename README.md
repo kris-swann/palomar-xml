@@ -26,13 +26,13 @@ chmod +x ./convert.py
 source .venv/bin/activate  # Can skip this if venv is already activated
 
 # Call command with the format of the following
-./convert.py <xlsx file> <worksheet name> <year> <quarter>
+./convert.py <path to xlsx file> <worksheet name> <year> <quarter>
 
-# Example
+# Example (if *.xlsx file is in the palomar-xml directory)
 ./convert.py FL_2020_Q4.xlsx "2020 Q4 for xml" 2020 4
 ```
 
-
+File will be output as `FSLSO_{Year}_{Quarter}.xml` in the `palomar-xml` directory
 
 Do not forget that if any of the arguments contain spaces, you must wrap that argument in quotes. If problem persists, just remove spaces from file name and worksheet names and run command without any quotes.
 
